@@ -26,7 +26,11 @@ class Note extends FlxSprite
 	public var modifiedByLua:Bool = false;
 	public var sustainLength:Float = 0;
 	public var isSustainNote:Bool = false;
-	public var noteType:String = ""; // default
+	public var noteStyle:String = "normal";
+
+
+	// WORKING SPECIAL NOTE VAR
+	public var noteType:Int = 0;
 
 	public var noteScore:Float = 1;
 
@@ -38,7 +42,7 @@ class Note extends FlxSprite
 
 	public var rating:String = "shit";
 
-	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?noteType:String = "")
+	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?noteType:Int = 0)
 		{
 			super();
  
@@ -55,7 +59,7 @@ class Note extends FlxSprite
  
 			if (this.strumTime < 0 )
 				this.strumTime = 0;
-
+ 
 			this.noteData = noteData;
  
 			var daStage:String = PlayState.curStage;
@@ -65,23 +69,41 @@ class Note extends FlxSprite
 				case 'pixel':
 					loadGraphic(Paths.image('weeb/pixelUI/arrows-pixels','week6'), true, 17, 17);
  
-					if (noteType == "burning")
-					{
-						loadGraphic(Paths.image('NOTE_fire-pixel'), true, 21, 31);
-					
-						animation.add('greenScroll', [6, 7, 6, 8], 8);
-						animation.add('redScroll', [9, 10, 9, 11], 8);
-						animation.add('blueScroll', [3, 4, 3, 5], 8);
-						animation.add('purpleScroll', [0, 1 ,0, 2], 8);
-						x -= 15;
-					}
+					if (noteType == 2)
+						{
+							animation.add('greenScroll', [22]);
+							animation.add('redScroll', [23]);
+							animation.add('blueScroll', [21]);
+							animation.add('purpleScroll', [20]);
+						}
+					if (noteType == 3)
+						{
+							animation.add('greenScroll', [22]);
+							animation.add('redScroll', [23]);
+							animation.add('blueScroll', [21]);
+							animation.add('purpleScroll', [20]);
+						}
+					if (noteType == 4)
+						{
+							animation.add('greenScroll', [22]);
+							animation.add('redScroll', [23]);
+							animation.add('blueScroll', [21]);
+							animation.add('purpleScroll', [20]);
+						}
+					if (noteType == 5)
+						{
+							animation.add('greenScroll', [22]);
+							animation.add('redScroll', [23]);
+							animation.add('blueScroll', [21]);
+							animation.add('purpleScroll', [20]);
+						}
 					else
-					{
-						animation.add('greenScroll', [6]);
-						animation.add('redScroll', [7]);
-						animation.add('blueScroll', [5]);
-						animation.add('purpleScroll', [4]);
-					}
+						{
+							animation.add('greenScroll', [6]);
+							animation.add('redScroll', [7]);
+							animation.add('blueScroll', [5]);
+							animation.add('purpleScroll', [4]);
+						}
  
 					if (isSustainNote)
 					{
@@ -98,29 +120,73 @@ class Note extends FlxSprite
 						animation.add('bluehold', [1]);
 					}
  
-					setGraphicSize(Std.int(width * PlayState.daPixelZoom));
+					
 					updateHitbox();
 				default:
 						frames = Paths.getSparrowAtlas('NOTE_assets');
-						/*var fuckingSussy = Paths.getSparrowAtlas('NOTE_fire');
+						var fuckingSussy = Paths.getSparrowAtlas('NOTE_assets');
 						for(amogus in fuckingSussy.frames)
 							{
 								this.frames.pushFrame(amogus);
-							}*/
+							}
  
-						switch (noteType)
+						switch(noteType)
 						{
-							case "burning":
+							case 2:
 							{
-								frames = Paths.getSparrowAtlas('NOTE_fire');
-								animation.addByPrefix('blueScroll', 'blue fire');
-								animation.addByPrefix('greenScroll', 'green fire');
-								animation.addByPrefix('redScroll', 'red fire');
-								animation.addByPrefix('purpleScroll', 'purple fire');
-
-								//if(FlxG.save.data.downscroll)
-									//flipY = true;
-								x -= 50;
+								frames = Paths.getSparrowAtlas('NOTE_loose');
+								animation.addByPrefix('greenScroll', 'green');
+								animation.addByPrefix('redScroll', 'red');
+								animation.addByPrefix('blueScroll', 'blue');
+								animation.addByPrefix('purpleScroll', 'purple');
+ 
+								
+ 
+								setGraphicSize(Std.int(width / 1.5));
+								updateHitbox();
+								antialiasing = true;
+							}
+							case 3:
+							{
+								frames = Paths.getSparrowAtlas('NOTE_danger');
+								animation.addByPrefix('greenScroll', 'green');
+								animation.addByPrefix('redScroll', 'red');
+								animation.addByPrefix('blueScroll', 'blue');
+								animation.addByPrefix('purpleScroll', 'purple');
+ 
+								
+ 
+								setGraphicSize(Std.int(width / 1.5));
+								updateHitbox();
+								antialiasing = true;
+							}
+							case 4:
+							{
+								frames = Paths.getSparrowAtlas('NOTE_charge');
+								animation.addByPrefix('greenScroll', 'green');
+								animation.addByPrefix('redScroll', 'red');
+								animation.addByPrefix('blueScroll', 'blue');
+								animation.addByPrefix('purpleScroll', 'purple');
+ 
+								
+ 
+								setGraphicSize(Std.int(width / 1.5));
+								updateHitbox();
+								antialiasing = true;
+							}
+							case 5:
+							{
+								frames = Paths.getSparrowAtlas('NOTE_remnant');
+								animation.addByPrefix('greenScroll', 'green');
+								animation.addByPrefix('redScroll', 'red');
+								animation.addByPrefix('blueScroll', 'blue');
+								animation.addByPrefix('purpleScroll', 'purple');
+ 
+								
+ 
+								setGraphicSize(Std.int(width / 1.5));
+								updateHitbox();
+								antialiasing = true;
 							}
 							default:
 							{
@@ -139,11 +205,12 @@ class Note extends FlxSprite
 								animation.addByPrefix('greenhold', 'green hold piece');
 								animation.addByPrefix('redhold', 'red hold piece');
 								animation.addByPrefix('bluehold', 'blue hold piece');
+ 
+								setGraphicSize(Std.int(width * 0.7));
+								updateHitbox();
+								antialiasing = true;
 							}
 						}
-						setGraphicSize(Std.int(width * 0.7));
-						updateHitbox();
-						antialiasing = true;
 			}
 
 		switch (noteData)
@@ -210,7 +277,7 @@ class Note extends FlxSprite
 						prevNote.animation.play('redhold');
 				}
 
-
+				
 				if(FlxG.save.data.scrollSpeed != 1)
 					prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.5 * FlxG.save.data.scrollSpeed;
 				else
@@ -228,34 +295,12 @@ class Note extends FlxSprite
 		if (mustPress)
 		{
 			// The * 0.5 is so that it's easier to hit them too late, instead of too early
-			if (noteType == "")
-				{
-					if (strumTime > Conductor.songPosition - Conductor.safeZoneOffset
-						&& strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * 0.5))
-						canBeHit = true;
-					else
-						canBeHit = false;
-				}
-				else
-				{
-					/*if (PlayState.curStage == 'auditorHell') // these though, REALLY hard to hit.
-					{
-						if (strumTime > Conductor.songPosition - (Conductor.safeZoneOffset * 0.3)
-							&& strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * 0.2)) // also they're almost impossible to hit late!
-							canBeHit = true;
-						else
-							canBeHit = false;
-					}
-					else
-					{*/
-					// make burning notes a lot harder to accidently hit because they're weirdchamp!
-						if (strumTime > Conductor.songPosition - (Conductor.safeZoneOffset * 0.6)
-							&& strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * 0.4)) // also they're almost impossible to hit late!
-							canBeHit = true;
-						else
-							canBeHit = false;
-					//}
-				}
+			if (strumTime > Conductor.songPosition - (Conductor.safeZoneOffset * 1.5)
+				&& strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * 0.5))
+				canBeHit = true;
+			else
+				canBeHit = false;
+
 			if (strumTime < Conductor.songPosition - Conductor.safeZoneOffset * Conductor.timeScale && !wasGoodHit)
 				tooLate = true;
 		}
